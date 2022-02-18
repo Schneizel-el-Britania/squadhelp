@@ -9,15 +9,13 @@ class WebSocket {
     this.listen();
   }
 
-    listen = () => {
-      this.socket.on('connect', () => {
-        this.anotherSubscribes();
-      });
-    };
+  listen = () => {
+    this.socket.on('connect', () => {
+      this.anotherSubscribes();
+    });
+  };
 
-    anotherSubscribes = () => {
-
-    };
+  anotherSubscribes = () => { };
 }
 
 export default WebSocket;

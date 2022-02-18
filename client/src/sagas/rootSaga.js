@@ -1,9 +1,7 @@
 import { takeLatest, takeLeading, takeEvery } from 'redux-saga/effects';
 import ACTION from '../actions/actionTypes';
 import { registerSaga, loginSaga } from './authSagas';
-import {
-  privateSaga, updateUserData, notAuthorizeSaga, headerRequest,
-} from './userSaga';
+import { privateSaga, updateUserData, notAuthorizeSaga, headerRequest } from './userSaga';
 import { paymentSaga, cashoutSaga } from './paymentSaga';
 import {
   activeContestsSaga,
