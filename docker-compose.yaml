@@ -4,6 +4,8 @@ services:
   client-prod:
     build:
       context: ./client
+    networks:
+      - frontend
     ports:
       - "80:80"
     depends_on:
@@ -16,6 +18,9 @@ services:
       context: ./server
     environment:
       NODE_ENV: production
+    networks:
+      - frontend
+      - backend
     ports:
       - "3000:3000"
     depends_on:
@@ -30,6 +35,8 @@ services:
       - POSTGRES_PASSWORD=password
       - POSTGRES_USER=postgres
       - POSTGRES_DB=todo-prod
+    networks:
+      - backend
     ports:
       - "5432:5432"
 
@@ -40,6 +47,8 @@ services:
       - MONGO_LOG_DIR=/dev/null
     volumes:
       - ./data/db:/data/db
+    networks:
+      - backend
     ports:
       - "27017:27017"
     command: mongod --smallfiles --logpath=/dev/null
@@ -47,3 +56,9 @@ services:
 volumes:
   server-prod:
   nginx-server-prod:
+
+networks:
+  frontend:
+    driver: bridge
+  backend:
+    driver: bridge

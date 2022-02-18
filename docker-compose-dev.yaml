@@ -12,6 +12,8 @@ services:
     volumes:
       - ./client:/client
       - /client/node_modules
+    networks:
+      - frontend
     ports:
       - "5000:3000"
 
@@ -26,6 +28,9 @@ services:
     depends_on:
       - db-dev
       - mongo-dev
+    networks:
+      - frontend
+      - backend
     volumes:
       - ./var/www/html/images:/var/www/html/images
       - ./server:/server
@@ -34,6 +39,8 @@ services:
 
   mongo-dev:
     image: mongo:4.4.6-bionic
+    networks:
+      - backend
     ports:
       - "27017:27017"
 
@@ -45,8 +52,16 @@ services:
       - POSTGRES_PASSWORD=password
       - POSTGRES_USER=postgres
       - POSTGRES_DB=todo-dev
+    networks:
+      - backend
     ports:
       - "5432:5432"
 
 volumes:
   server-dev:
+
+networks:
+  frontend:
+    driver: bridge
+  backend:
+    driver: bridge
