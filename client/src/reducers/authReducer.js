@@ -25,12 +25,6 @@ export default function (state = initialState, action) {
         error: action.error,
       };
     }
-    case ACTION.AUTH_ACTION_CLEAR_ERROR: {
-      return {
-        ...state,
-        error: null,
-      };
-    }
     case ACTION.AUTH_ACTION_CLEAR: {
       return initialState;
     }

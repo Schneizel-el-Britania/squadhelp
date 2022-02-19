@@ -18,10 +18,6 @@ export const payRequest = (data, history) => ({
   history,
 });
 
-export const clearErrorSignUpAndLogin = () => ({
-  type: ACTION.AUTH_ACTION_CLEAR_ERROR,
-});
-
 export const clearUserStore = () => ({
   type: ACTION.CLEAR_USER_STORE,
 });
