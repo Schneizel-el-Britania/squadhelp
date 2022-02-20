@@ -1,84 +1,30 @@
 import React from 'react';
-import { connect } from 'react-redux';
+import { useSelector } from 'react-redux';
 import isEmpty from 'lodash/isEmpty';
-import { payRequest, clearPaymentStore } from '../../actions/actionCreator';
-import PayForm from '../../components/PayForm/PayForm';
-import styles from './Payment.module.sass';
+import Logo from '../../components/Logo';
+import PaymentOrderInfo from './PaymentOrderInfo';
+import PaymentCheckout from './PaymentCheckout';
 import CONSTANTS from '../../constants';
-import Error from '../../components/Error/Error';
+import styles from './Payment.module.sass';
 
 const Payment = (props) => {
-  const pay = (values) => {
-    const { contests } = props.contestStore;
-    const contestArray = [];
-    Object.keys(contests).forEach((key) => contestArray.push(contests[key]));
-    const { number, expiry, cvc } = values;
-    const data = new FormData();
-    for (let i = 0; i < contestArray.length; i++) {
-      data.append('files', contestArray[i].file);
-      contestArray[i].haveFile = !!contestArray[i].file;
-    }
-    data.append('number', number);
-    data.append('expiry', expiry);
-    data.append('cvc', cvc);
-    data.append('contests', JSON.stringify(contestArray));
-    data.append('price', '100');
-    props.pay({
-      data: {
-        formData: data,
-      },
-      history: props.history,
-    });
-  };
+  const { contests } = useSelector(({ contestStore }) => contestStore);
 
-  const goBack = () => {
-    props.history.goBack();
-  };
-
-  const { contests } = props.contestStore;
-  const { error } = props.payment;
-  const { clearPaymentStore } = props;
   if (isEmpty(contests)) {
     props.history.replace('startContest');
   }
+
   return (
     <div>
       <div className={styles.header}>
-        <img src={`${CONSTANTS.STATIC_IMAGES_PATH}blue-logo.png`} alt="blue-logo" />
+        <Logo src={`${CONSTANTS.STATIC_IMAGES_PATH}blue-logo.png`} />
       </div>
       <div className={styles.mainContainer}>
-        <div className={styles.paymentContainer}>
-          <span className={styles.headerLabel}>Checkout</span>
-          {error && <Error data={error.data} status={error.status} clearError={clearPaymentStore} />}
-          <PayForm sendRequest={pay} back={goBack} isPayForOrder />
-        </div>
-        <div className={styles.orderInfoContainer}>
-          <span className={styles.orderHeader}>Order Summary</span>
-          <div className={styles.packageInfoContainer}>
-            <span className={styles.packageName}>Package Name: Standard</span>
-            <span className={styles.packagePrice}>$100 USD</span>
-          </div>
-          <div className={styles.resultPriceContainer}>
-            <span>Total:</span>
-            <span>$100.00 USD</span>
-          </div>
-          <a href="http://www.google.com">Have a promo code?</a>
-        </div>
+        <PaymentCheckout history={props.history} />
+        <PaymentOrderInfo />
       </div>
     </div>
   );
 };
 
-const mapStateToProps = (state) => ({
-  payment: state.payment,
-  contestStore: state.contestStore,
-});
-
-const mapDispatchToProps = (dispatch) => (
-  {
-    pay: ({ data, history }) => dispatch(payRequest(data, history)),
-    clearPaymentStore: () => dispatch(clearPaymentStore()),
-  }
-);
-
-export default connect(mapStateToProps, mapDispatchToProps)(Payment);
+export default Payment;
