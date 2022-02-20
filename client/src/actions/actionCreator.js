@@ -44,8 +44,6 @@ export const getDataForContest = (data) => ({
   data,
 });
 
-export const clearDataForContest = () => ({ type: ACTION.CLEAR_DATA_FOR_SELECTS });
-
 export const getContestsForCreative = (data) => ({
   type: ACTION.GET_CONTESTS_FOR_CREATIVE,
   data,
