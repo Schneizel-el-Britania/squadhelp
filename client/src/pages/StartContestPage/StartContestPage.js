@@ -10,10 +10,10 @@ import StartContestCombinedBundles from './StartContestCombinedBundles';
 import CONSTANTS from '../../constants';
 
 const StartContestPage = (props) => {
-  const { data: { role } } = useSelector(({ userStore }) => userStore);
+  const { data } = useSelector(({ userStore }) => userStore);
   const { selectBundle } = bindActionCreators(actionCreator, useDispatch());
 
-  if (role !== CONSTANTS.CUSTOMER) { props.history.replace('/'); }
+  if (data?.role !== CONSTANTS.CUSTOMER) { props.history.replace('/'); }
 
   const setBundle = (bundleStr) => {
     const array = bundleStr.toLowerCase().split('+');
