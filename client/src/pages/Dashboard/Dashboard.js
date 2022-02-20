@@ -1,24 +1,23 @@
 import React from 'react';
-import { connect } from 'react-redux';
-import CONSTANTS from '../../constants';
+import { useSelector } from 'react-redux';
 import CustomerDashboard from '../../components/CustomerDashboard/CustomerDashboard';
 import CreatorDashboard from '../../components/CreatorDashboard/CreatorDashboard';
 import Header from '../../components/Header/Header';
+import CONSTANTS from '../../constants';
 
 const Dashboard = (props) => {
-  const { role, history } = props;
+  const { history, match } = props;
+  const { data } = useSelector(({ userStore }) => userStore);
+  if (!data) { history.replace('/login'); }
+
   return (
     <div>
       <Header />
-      {
-        role === CONSTANTS.CUSTOMER
-          ? <CustomerDashboard history={history} match={props.match} />
-          : <CreatorDashboard history={history} match={props.match} />
-      }
+      {data && (data.role === CONSTANTS.CUSTOMER
+        ? <CustomerDashboard history={history} match={match} />
+        : <CreatorDashboard history={history} match={match} />)}
     </div>
   );
 };
 
-const mapStateToProps = (state) => state.userStore.data;
-
-export default connect(mapStateToProps)(Dashboard);
+export default Dashboard;
