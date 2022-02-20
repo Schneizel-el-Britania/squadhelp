@@ -1,51 +1,45 @@
 import React from 'react';
-import styles from './BundleBox.module.sass';
+import classnames from 'classnames';
 import CONSTANTS from '../../constants';
+import styles from './BundleBox.module.sass';
 
 const BundleBox = (props) => {
+  const { path, header, setBundle, describe } = props;
   const defaultPathToImages = `${CONSTANTS.STATIC_IMAGES_PATH}contestLabels/`;
 
-  const renderImage = () => {
-    const array = [];
-    for (let i = 0; i < props.path.length; i++) {
-      array.push(<img
-        src={defaultPathToImages + props.path[i]}
+  const renderImage = () =>
+    new Array(path.length).fill(null).map((_, i) =>
+      <img
+        src={defaultPathToImages + path[i]}
         key={i}
         className={styles.imgContainer}
         alt={props.path[i].replace(/.png/g, 'Contest')}
-      />);
-    }
-    return array;
-  };
+      />
+    );
 
-  const mouseOverHandler = () => {
-    const element = document.getElementById(props.header);
+  const mouseHandler = (isOver) => {
+    const element = document.getElementById(header);
     for (let i = 0; i < element.children[0].children.length; i++) {
-      element.children[0].children[i].src = `${defaultPathToImages}blue_${props.path[i]}`;
+      element.children[0].children[i].src = isOver ?
+        `${defaultPathToImages}blue_${path[i]}` :
+        defaultPathToImages + path[i];
     }
   };
 
-  const mouseOutHandler = () => {
-    const element = document.getElementById(props.header);
-    for (let i = 0; i < element.children[0].children.length; i++) {
-      element.children[0].children[i].src = defaultPathToImages + props.path[i];
-    }
-  };
+  const classNames = classnames(
+    styles.bundleContainer,
+    props.path.length > 1 ? styles.combinedBundle : null
+  );
 
-  const getBackClass = () => (props.path.length === 1 ? ' ' : ` ${styles.combinedBundle}`);
-
-  const { setBundle, header, describe } = props;
   return (
     <div
-      onMouseOver={mouseOverHandler}
-      onMouseOut={mouseOutHandler}
+      onMouseOver={() => mouseHandler(true)}
+      onMouseOut={() => mouseHandler(false)}
       onClick={() => setBundle(header)}
       id={header}
-      className={styles.bundleContainer + getBackClass()}
+      className={classNames}
     >
-      <div>
-        {renderImage()}
-      </div>
+      <div> {renderImage()} </div>
       <div className={styles.infoContainer}>
         <span className={styles.bundleName}>{header}</span>
         <hr />
