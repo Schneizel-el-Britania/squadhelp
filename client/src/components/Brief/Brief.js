@@ -1,13 +1,19 @@
 import React from 'react';
+import { bindActionCreators } from 'redux';
+import { useSelector, useDispatch } from 'react-redux';
 import { withRouter } from 'react-router-dom';
-import { connect } from 'react-redux';
-import { updateContest, changeEditContest, clearUpdateContestStore } from '../../actions/actionCreator';
+import * as actionCreator from '../../actions/actionCreator';
 import ContestForm from '../ContestForm/ContestForm';
-import styles from './Brief.module.sass';
 import ContestInfo from '../Contest/ContestInfo/ContestInfo';
 import Error from '../Error/Error';
+import styles from './Brief.module.sass';
 
 const Brief = (props) => {
+  const { isEditContest, contestData } = useSelector(({ contestByIdStore }) => contestByIdStore);
+  const { error } = useSelector(({ updateContestStore }) => updateContestStore);
+  const { data: { id: userId, role } } = useSelector(({ userStore }) => userStore);
+  const { updateContest, changeEditContest, clearUpdateContestStore } = bindActionCreators(actionCreator, useDispatch());
+
   const setNewContestData = (values) => {
     const data = new FormData();
     Object.keys(values).forEach((key) => {
@@ -16,66 +22,36 @@ const Brief = (props) => {
     if (values.file instanceof File) {
       data.append('file', values.file);
     }
-    data.append('contestId', props.contestData.id);
-    props.update(data);
+    data.append('contestId', contestData.id);
+    updateContest(data);
   };
 
   const getContestObjInfo = () => {
-    const {
-      focusOfWork,
-      industry,
-      nameVenture,
-      styleName,
-      targetCustomer,
-      title,
-      brandStyle,
-      typeOfName,
-      typeOfTagline,
-      originalFileName,
-      contestType,
-    } = props.contestData;
-    const data = {
-      focusOfWork,
-      industry,
-      nameVenture,
-      styleName,
-      targetCustomer,
-      title,
-      brandStyle,
-      typeOfName,
-      typeOfTagline,
-      originalFileName,
-      contestType,
-    };
     const defaultData = {};
-    Object.keys(data).forEach((key) => {
-      if (data[key]) {
+    Object.keys(contestData).forEach((key) => {
+      if (contestData[key]) {
         if (key === 'originalFileName') {
-          defaultData.file = { name: data[key] };
+          defaultData.file = { name: contestData[key] };
         } else {
-          defaultData[key] = data[key];
+          defaultData[key] = contestData[key];
         }
       }
     });
     return defaultData;
   };
 
-  const {
-    isEditContest, contestData, changeEditContest, role, goChat, clearUpdateContestStore,
-  } = props;
-  const { error } = props.updateContestStore;
-  const { id } = props.userStore.data;
   if (!isEditContest) {
     return (
       <ContestInfo
-        userId={id}
+        userId={userId}
         contestData={contestData}
         changeEditContest={changeEditContest}
         role={role}
-        goChat={goChat}
+        goChat={props.goChat}
       />
     );
   }
+
   return (
     <div className={styles.contestForm}>
       {error && <Error data={error.data} status={error.status} clearError={clearUpdateContestStore} />}
@@ -88,16 +64,4 @@ const Brief = (props) => {
   );
 };
 
-const mapStateToProps = (state) => {
-  const { isEditContest } = state.contestByIdStore;
-  const { updateContestStore, userStore } = state;
-  return { updateContestStore, userStore, isEditContest };
-};
-
-const mapDispatchToProps = (dispatch) => ({
-  update: (data) => dispatch(updateContest(data)),
-  changeEditContest: (data) => dispatch(changeEditContest(data)),
-  clearUpdateContestStore: () => dispatch(clearUpdateContestStore()),
-});
-
-export default withRouter(connect(mapStateToProps, mapDispatchToProps)(Brief));
+export default withRouter(Brief);
