@@ -40,6 +40,183 @@ export default {
     'a Product',
     'a Startup',
   ],
+  HeaderItems: {
+    nav: [
+      {
+        title: 'NAME IDEAS',
+        items: [
+          {
+            value: 'Beauty',
+            href: '#'
+          },
+          {
+            value: 'Consulting',
+            href: '#'
+          },
+          {
+            value: 'E-Commerce',
+            href: '#'
+          },
+          {
+            value: 'Fashion & Clothing',
+            href: '#'
+          },
+          {
+            value: 'Finance',
+            href: '#'
+          },
+          {
+            value: 'Real Estate',
+            href: '#'
+          },
+          {
+            value: 'Tech',
+            href: '#'
+          },
+          {
+            value: 'More Categories',
+            href: '#',
+            selected: true
+          }
+        ],
+      },
+      {
+        title: 'CONTESTS',
+        items: [
+          {
+            value: 'HOW IT WORKS',
+            href: '#'
+          },
+          {
+            value: 'PRICING',
+            href: '#'
+          },
+          {
+            value: 'AGENCY SERVICE',
+            href: '#'
+          },
+          {
+            value: 'ACTIVE CONTESTS',
+            href: '#'
+          },
+          {
+            value: 'WINNERS',
+            href: '#'
+          },
+          {
+            value: 'LEADERBOARD',
+            href: '#'
+          },
+          {
+            value: 'BECOME A CREATIVE',
+            href: '#',
+            selected: true
+          },
+        ],
+      },
+      {
+        title: 'Our Work',
+        items: [
+          {
+            value: 'NAMES',
+            href: '#'
+          },
+          {
+            value: 'TAGLINES',
+            href: '#'
+          },
+          {
+            value: 'LOGOS',
+            href: '#'
+          },
+          {
+            value: 'TESTIMONIALS',
+            href: '#',
+            selected: true
+          },
+        ],
+      },
+      {
+        title: 'Names For Sale',
+        items: [
+          {
+            value: 'POPULAR NAMES',
+            href: '#'
+          },
+          {
+            value: 'SHORT NAMES',
+            href: '#'
+          },
+          {
+            value: 'INTRIGUING NAMES',
+            href: '#'
+          },
+          {
+            value: 'NAMES BY CATEGORY',
+            href: '#'
+          },
+          {
+            value: 'VISUAL NAME SEARCH',
+            href: '#'
+          },
+          {
+            value: 'SELL YOUR DOMAINS',
+            href: '#',
+            selected: true
+          }
+        ],
+      },
+      {
+        title: 'Blog',
+        items: [
+          {
+            value: 'ULTIMATE NAMING GUIDE',
+            href: '#'
+          },
+          {
+            value: 'POETIC DEVICES IN BUSINESS NAMING',
+            href: '#'
+          },
+          {
+            value: 'CROWDED BAR THEORY',
+            href: '#'
+          },
+          {
+            value: 'ALL ARTICLES',
+            href: '#'
+          }
+        ],
+      }
+    ],
+    auth: [
+      {
+        title: 'LOGIN',
+        href: '/login'
+      },
+      {
+        title: 'SIGN UP',
+        href: '/registration'
+      }
+    ],
+    menu: [
+      {
+        title: 'View Dashboard',
+        href: '/account'
+      },
+      {
+        title: 'My Account',
+        href: '#'
+      },
+      {
+        title: 'Affiliate Dashboard',
+        href: '#'
+      },
+      {
+        title: 'Logout',
+        logOut: true
+      }
+    ]
+  },
   FooterItems: [
     {
       title: 'SQUADHELP',
