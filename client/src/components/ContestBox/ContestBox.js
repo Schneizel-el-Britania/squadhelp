@@ -1,7 +1,7 @@
 import React from 'react';
 import moment from 'moment';
-import styles from './ContestBox.module.sass';
 import CONSTANTS from '../../constants';
+import styles from './ContestBox.module.sass';
 
 const ContestBox = (props) => {
   const getTimeStr = () => {
@@ -22,9 +22,7 @@ const ContestBox = (props) => {
 
   const ucFirstLetter = (string) => string.charAt(0).toUpperCase() + string.slice(1);
 
-  const {
-    id, title, contestType, prize, count, goToExtended,
-  } = props.data;
+  const { id, title, contestType, prize, count } = props.data;
   return (
     <div className={styles.contestBoxContainer} onClick={() => props.goToExtended(id)}>
       <div className={styles.mainContestInfo}>
