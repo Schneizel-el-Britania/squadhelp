@@ -57,7 +57,7 @@ const Brief = (props) => {
       {error && <Error data={error.data} status={error.status} clearError={clearUpdateContestStore} />}
       <ContestForm
         contestType={contestData.contestType}
-        defaultData={getContestObjInfo()}
+        defaultData={getContestObjInfo}
         handleSubmit={setNewContestData}
       />
     </div>
