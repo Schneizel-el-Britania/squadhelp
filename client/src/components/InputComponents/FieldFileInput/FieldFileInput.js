@@ -1,17 +1,14 @@
 import React from 'react';
 import { Field } from 'formik';
 
-const FieldFileInput = ({ classes, ...rest }) => {
-  const {
-    fileUploadContainer, labelClass, fileNameClass, fileInput,
-  } = classes;
+const FieldFileInput = (props) => {
+  const { classes, ...rest } = props;
+  const { fileUploadContainer, labelClass, fileNameClass, fileInput } = classes;
 
   return (
     <Field name={rest.name}>
       {(props) => {
-        const {
-          field,
-        } = props;
+        const { field } = props;
 
         const getFileName = () => {
           if (props.field.value) {
