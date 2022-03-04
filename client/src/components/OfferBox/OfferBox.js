@@ -13,7 +13,7 @@ import 'react-confirm-alert/src/react-confirm-alert.css';
 import './confirmStyle.css';
 
 const OfferBox = (props) => {
-  const { contestType, data: { User: { id: userId, avatar, firstName, lastName, email, rating }, status, mark, fileName, text } } = props;
+  const { contestType, data: { User, User: { id: userId, avatar, firstName, lastName, email, rating }, status, mark, fileName, text } } = props;
   const { data: { id, role } } = useSelector(({ userStore }) => userStore);
   const { messagesPreview } = useSelector(({ chatStore }) => chatStore);
   const { changeMark, clearChangeMarkError, goToExpandedDialog, changeShowImage } = bindActionCreators(actionCreator, useDispatch());
