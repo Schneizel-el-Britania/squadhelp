@@ -1,31 +1,25 @@
-import React from 'react';
-import { connect } from 'react-redux';
-import { onlyForNotAuthorize } from '../../actions/actionCreator';
+import React, { useEffect } from 'react';
+import { bindActionCreators } from 'redux';
+import { useSelector, useDispatch } from 'react-redux';
+import * as actionCreator from '../../actions/actionCreator';
 import Spinner from '../Spinner/Spinner';
 
 const OnlyNotAuthorizedUserHoc = (Component) => {
-  const mapStateToProps = (state) => state.userStore;
 
-  const mapDispatchToProps = (dispatch) => ({
-    checkAuth: (data) => dispatch(onlyForNotAuthorize(data)),
-  });
+  const HocForLoginSignUp = (props) => {
+    const { history } = props;
+    const { data, isFetching } = useSelector(({ userStore }) => userStore);
+    const { onlyForNotAuthorize } = bindActionCreators(actionCreator, useDispatch());
 
-  class HocForLoginSignUp extends React.Component {
-    componentDidMount() {
-      this.props.checkAuth(this.props.history.replace);
-    }
+    useEffect(() => onlyForNotAuthorize(history.replace), []);
+    
+    return (<>
+      {isFetching && <Spinner />}
+      {!data && <Component history={history} />}
+    </>);
+  };
 
-    render() {
-      if (this.props.isFetching) {
-        return <Spinner />;
-      } if (!this.props.data) {
-        return <Component history={this.props.history} />;
-      }
-      return null;
-    }
-  }
-
-  return connect(mapStateToProps, mapDispatchToProps)(HocForLoginSignUp);
+  return HocForLoginSignUp;
 };
 
 export default OnlyNotAuthorizedUserHoc;
