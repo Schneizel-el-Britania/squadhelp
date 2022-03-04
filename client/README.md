@@ -1,3 +1,16 @@
+## Примечания
+
+- При работе приложения в dev-режиме понадобятся данные тестовых банковских карт:
+
+  - для оплаты работы с карты buyer`а при создании контеста:
+    - Card number: 4111111111111111
+    - Expires end: 09/23
+    - cvc/cvv: 505
+  - для вывода средств на карту creator`а:
+    - Card number: 5105105105105100
+    - Expires end: 09/23
+    - cvc/cvv: 510
+
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
 ## Available Scripts
