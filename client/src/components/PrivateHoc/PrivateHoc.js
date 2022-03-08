@@ -1,27 +1,33 @@
-import React, { useEffect } from 'react';
-import { bindActionCreators } from 'redux';
-import { useSelector, useDispatch } from 'react-redux';
-import * as actionCreator from '../../actions/actionCreator';
+import React from 'react';
+import { connect } from 'react-redux';
+import { getUserAction } from '../../actions/actionCreator';
 import Spinner from '../Spinner/Spinner';
 
-const PrivateHoc = (Component) => {
+const PrivateHoc = (Component, props) => {
+  const mapStateToProps = (state) => state.userStore;
 
-  const Hoc = (props) => {
-    const { history, match } = props;
-    const { isFetching, data } = useSelector(({ userStore }) => userStore);
-    const { getUserAction } = bindActionCreators(actionCreator, useDispatch());
-    useEffect(() => {
-      if (!data) {
-        getUserAction(history.replace);
+  const mapDispatchToProps = (dispatch) => ({
+    getUser: (data) => dispatch(getUserAction(data)),
+  });
+
+  class Hoc extends React.Component {
+    componentDidMount() {
+      if (!this.props.data) {
+        this.props.getUser(this.props.history.replace);
       }
-    }, []);
+    }
 
-    return (<>
-      {isFetching ? <Spinner /> : <Component history={history} match={match} {...props} />}
-    </>);
-  };
+    render() {
+      return (
+        <>
+          {this.props.isFetching ? <Spinner />
+            : <Component history={this.props.history} match={this.props.match} {...props} />}
+        </>
+      );
+    }
+  }
 
-  return Hoc;
+  return connect(mapStateToProps, mapDispatchToProps)(Hoc);
 };
 
 export default PrivateHoc;
