@@ -1,7 +1,7 @@
 import React from 'react';
 import Flickity from 'react-flickity-component';
-import style from './SlideBar.module.sass';
 import carouselConstants from '../../carouselConstants';
+import style from './SlideBar.module.sass';
 import './flickity.css';
 
 const SliderBar = (props) => {
@@ -60,15 +60,14 @@ const SliderBar = (props) => {
       }
     }
   };
+  
   return (
     <Flickity
       className={getStyleName()}
       elementType="div"
       options={options}
     >
-      {
-                renderSlides()
-            }
+      {renderSlides()}
     </Flickity>
   );
 };

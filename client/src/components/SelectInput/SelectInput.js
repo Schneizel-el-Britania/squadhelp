@@ -1,18 +1,8 @@
 import React, { useLayoutEffect } from 'react';
 import { Field, ErrorMessage } from 'formik';
 
-const SelectInput = ({
-  header,
-  classes,
-  optionsArray,
-  valueArray,
-  ...props
-}) => {
-  const {
-    form: { setFieldValue },
-    meta: { initialValue },
-    field,
-  } = props;
+const SelectInput = (props) => {
+  const { header, classes, optionsArray, valueArray, form: { setFieldValue }, meta: { initialValue }, field } = props;
 
   const getOptionsArray = () => {
     const array = [];
@@ -48,27 +38,24 @@ const SelectInput = ({
   );
 };
 
-const SelectInputWrapper = ({
-  header,
-  classes,
-  optionsArray,
-  valueArray,
-  ...rest
-}) => (
-  <Field {...rest}>
-    {(fieldProps) => (
-      <>
-        <SelectInput
-          {...fieldProps}
-          header={header}
-          classes={classes}
-          optionsArray={optionsArray}
-          valueArray={valueArray}
-        />
-        <ErrorMessage name={fieldProps.field.name} component="span" className={classes.warning} />
-      </>
-    )}
-  </Field>
-);
+const SelectInputWrapper = (props) => {
+  const { header, classes, optionsArray, valueArray, ...rest } = props;
+  return (
+    <Field {...rest}>
+      {(fieldProps) => (
+        <>
+          <SelectInput
+            {...fieldProps}
+            header={header}
+            classes={classes}
+            optionsArray={optionsArray}
+            valueArray={valueArray}
+          />
+          <ErrorMessage name={fieldProps.field.name} component="span" className={classes.warning} />
+        </>
+      )}
+    </Field>
+  );
+};
 
 export default SelectInputWrapper;
