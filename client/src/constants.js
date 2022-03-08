@@ -263,24 +263,44 @@ export default {
       ],
     },
   ],
-  UpdateInfoItems: [
+  UserInfoItems: [
     {
       name: "firstName",
       label: "First Name",
-      type: "text"
+      type: "text",
+      isEditable: true
     },
     {
       name: "lastName",
       label: "Last Name",
-      type: "text"
+      type: "text",
+      isEditable: true
     },
     {
       name: "displayName",
       label: "Display Name",
-      type: "text"
+      type: "text",
+      isEditable: true
     },
     {
-      name: "file"
+      name: "email",
+      label: "Email",
+      isEditable: false
+    },
+    {
+      name: "role",
+      label: "Role",
+      isEditable: false
+    },
+    {
+      name: "balance",
+      label: "Balance",
+      isEditable: false,
+      onlyCreator: true
+    },
+    {
+      name: "file",
+      isEditable: true
     }
   ]
 };

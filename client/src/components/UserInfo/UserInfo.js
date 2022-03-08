@@ -1,27 +1,42 @@
 import React from 'react';
-import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
+import { useSelector, useDispatch } from 'react-redux';
 import UpdateUserInfoForm from '../UpdateUserInfoForm/UpdateUserInfoForm';
-import { updateUserData, changeEditModeOnUserProfile } from '../../actions/actionCreator';
+import * as actionCreator from '../../actions/actionCreator';
 import CONSTANTS from '../../constants';
 import styles from './UserInfo.module.sass';
 
-const UserInfo = (props) => {
-  const updateUserData = (values) => {
+const UserInfo = () => {
+  const { data, data: {avatar, role} } = useSelector(({ userStore }) => userStore);
+  const { isEdit } = useSelector(({ userProfile }) => userProfile);
+  const { updateUserData, changeEditModeOnUserProfile }  = bindActionCreators(actionCreator, useDispatch());
+
+  const updateUserDataHandle = (values) => {
     const formData = new FormData();
     formData.append('file', values.file);
     formData.append('firstName', values.firstName);
     formData.append('lastName', values.lastName);
     formData.append('displayName', values.displayName);
-    props.updateUser(formData);
+    updateUserData(formData);
   };
 
-  const { isEdit, changeEditMode, data } = props;
-  const {
-    avatar, firstName, lastName, displayName, email, role, balance,
-  } = data;
+  const getInfoBlock = (values) => (
+    <div className={styles.infoBlock}>
+      <span className={styles.label}>{values.label}</span>
+      <span className={styles.info}>{values.name}</span>
+    </div>
+  );
+
+  const displayUserInfo = () =>
+    CONSTANTS.UserInfoItems.map((values) => {
+      const { label, name, onlyCreator } = values;
+      if (!label || (role !== CONSTANTS.CREATOR && onlyCreator)) return;
+      return (onlyCreator ? getInfoBlock({ label, name: data[name] + '$' }) : getInfoBlock({ label, name: data[name] }));
+    });
+
   return (
     <div className={styles.mainContainer}>
-      {isEdit ? <UpdateUserInfoForm onSubmit={updateUserData} />
+      {isEdit ? <UpdateUserInfoForm onSubmit={updateUserDataHandle} />
         : (
           <div className={styles.infoContainer}>
             <img
@@ -29,38 +44,11 @@ const UserInfo = (props) => {
               className={styles.avatar}
               alt="user"
             />
-            <div className={styles.infoContainer}>
-              <div className={styles.infoBlock}>
-                <span className={styles.label}>First Name</span>
-                <span className={styles.info}>{firstName}</span>
-              </div>
-              <div className={styles.infoBlock}>
-                <span className={styles.label}>Last Name</span>
-                <span className={styles.info}>{lastName}</span>
-              </div>
-              <div className={styles.infoBlock}>
-                <span className={styles.label}>Display Name</span>
-                <span className={styles.info}>{displayName}</span>
-              </div>
-              <div className={styles.infoBlock}>
-                <span className={styles.label}>Email</span>
-                <span className={styles.info}>{email}</span>
-              </div>
-              <div className={styles.infoBlock}>
-                <span className={styles.label}>Role</span>
-                <span className={styles.info}>{role}</span>
-              </div>
-              {role === CONSTANTS.CREATOR && (
-                <div className={styles.infoBlock}>
-                  <span className={styles.label}>Balance</span>
-                  <span className={styles.info}>{`${balance}$`}</span>
-                </div>
-              )}
-            </div>
+            <div className={styles.infoContainer}>{displayUserInfo()}</div>
           </div>
         )}
       <div
-        onClick={() => changeEditMode(!isEdit)}
+        onClick={() => changeEditModeOnUserProfile(!isEdit)}
         className={styles.buttonEdit}
       >
         {isEdit ? 'Cancel' : 'Edit'}
@@ -69,15 +57,4 @@ const UserInfo = (props) => {
   );
 };
 
-const mapStateToProps = (state) => {
-  const { data } = state.userStore;
-  const { isEdit } = state.userProfile;
-  return { data, isEdit };
-};
-
-const mapDispatchToProps = (dispatch) => ({
-  updateUser: (data) => dispatch(updateUserData(data)),
-  changeEditMode: (data) => dispatch(changeEditModeOnUserProfile(data)),
-});
-
-export default connect(mapStateToProps, mapDispatchToProps)(UserInfo);
+export default UserInfo;

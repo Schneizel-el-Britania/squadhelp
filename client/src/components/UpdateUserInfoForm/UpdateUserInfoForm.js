@@ -34,23 +34,25 @@ const UpdateUserInfoForm = (props) => {
   };
 
   const updateFormCreator = () =>
-    CONSTANTS.UpdateInfoItems.map((data) => {
-      if (data?.type === "text") {
+    CONSTANTS.UserInfoItems.map((values) => {
+      const {isEditable, name, label} = values;
+      if (!isEditable) return;
+      if (values?.type === "text") {
         return (
-          <div className={styles.container} key={data.name}>
-            <span className={styles.label}>{data.label}</span>
+          <div className={styles.container} key={name}>
+            <span className={styles.label}>{label}</span>
             <FormInput
-              name={data.name}
-              type={data.type}
-              label={data.label}
+              name={name}
+              type={values.type}
+              label={label}
               classes={inputClasses}
             />
           </div>);
       }
       return (
         <ImageUpload
-          key={data.name}
-          name={data.name}
+          key={name}
+          name={name}
           classes={imageClasses}
         />);
     });
