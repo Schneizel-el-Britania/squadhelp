@@ -201,11 +201,11 @@ export default {
     menu: [
       {
         title: 'View Dashboard',
-        href: '/account'
+        href: '/dashboard'
       },
       {
         title: 'My Account',
-        href: '#'
+        href: '/account'
       },
       {
         title: 'Affiliate Dashboard',
@@ -263,4 +263,24 @@ export default {
       ],
     },
   ],
+  UpdateInfoItems: [
+    {
+      name: "firstName",
+      label: "First Name",
+      type: "text"
+    },
+    {
+      name: "lastName",
+      label: "Last Name",
+      type: "text"
+    },
+    {
+      name: "displayName",
+      label: "Display Name",
+      type: "text"
+    },
+    {
+      name: "file"
+    }
+  ]
 };

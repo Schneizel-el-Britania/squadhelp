@@ -1,93 +1,69 @@
 import React from 'react';
+import { bindActionCreators } from 'redux';
+import { useSelector, useDispatch } from 'react-redux';
 import { Form, Formik } from 'formik';
-import { connect } from 'react-redux';
-import { clearUserError } from '../../actions/actionCreator';
-import styles from './UpdateUserInfoForm.module.sass';
+import * as actionCreator from '../../actions/actionCreator';
 import ImageUpload from '../InputComponents/ImageUpload/ImageUpload';
 import FormInput from '../FormInput/FormInput';
 import Schems from '../../validators/validationSchems';
 import Error from '../Error/Error';
+import CONSTANTS from '../../constants';
+import styles from './UpdateUserInfoForm.module.sass';
 
 const UpdateUserInfoForm = (props) => {
-  const {
-    onSubmit, submitting, error, clearUserError,
-  } = props;
+  const { onSubmit, submitting } = props;
+  const { data, error } = useSelector(({ userStore }) => userStore);
+  const { clearUserError } = bindActionCreators(actionCreator, useDispatch());
+
+  const initialValues = {
+    firstName: data.firstName,
+    lastName: data.lastName,
+    displayName: data.displayName,
+  };
+  const inputClasses = {
+    container: styles.inputContainer,
+    input: styles.input,
+    warning: styles.error,
+    notValid: styles.notValid,
+  };
+
+  const imageClasses = {
+    uploadContainer: styles.imageUploadContainer,
+    inputContainer: styles.uploadInputContainer,
+    imgStyle: styles.imgStyle,
+  };
+
+  const updateFormCreator = () =>
+    CONSTANTS.UpdateInfoItems.map((data) => {
+      if (data?.type === "text") {
+        return (
+          <div className={styles.container} key={data.name}>
+            <span className={styles.label}>{data.label}</span>
+            <FormInput
+              name={data.name}
+              type={data.type}
+              label={data.label}
+              classes={inputClasses}
+            />
+          </div>);
+      }
+      return (
+        <ImageUpload
+          key={data.name}
+          name={data.name}
+          classes={imageClasses}
+        />);
+    });
+
   return (
-    <Formik onSubmit={onSubmit} initialValues={props.initialValues} validationSchema={Schems.UpdateUserSchema}>
+    <Formik onSubmit={onSubmit} initialValues={initialValues} validationSchema={Schems.UpdateUserSchema}>
       <Form className={styles.updateContainer}>
         {error && <Error data={error.data} status={error.status} clearError={clearUserError} />}
-        <div className={styles.container}>
-          <span className={styles.label}>First Name</span>
-          <FormInput
-            name="firstName"
-            type="text"
-            label="First Name"
-            classes={{
-              container: styles.inputContainer,
-              input: styles.input,
-              warning: styles.error,
-              notValid: styles.notValid,
-            }}
-          />
-        </div>
-        <div className={styles.container}>
-          <span className={styles.label}>Last Name</span>
-          <FormInput
-            name="lastName"
-            type="text"
-            label="LastName"
-            classes={{
-              container: styles.inputContainer,
-              input: styles.input,
-              warning: styles.error,
-              notValid: styles.notValid,
-            }}
-          />
-        </div>
-        <div className={styles.container}>
-          <span className={styles.label}>Display Name</span>
-          <FormInput
-            name="displayName"
-            type="text"
-            label="Display Name"
-            classes={{
-              container: styles.inputContainer,
-              input: styles.input,
-              warning: styles.error,
-              notValid: styles.notValid,
-            }}
-          />
-        </div>
-        <ImageUpload
-          name="file"
-          classes={{
-            uploadContainer: styles.imageUploadContainer,
-            inputContainer: styles.uploadInputContainer,
-            imgStyle: styles.imgStyle,
-          }}
-        />
-        <button type="submit" disabled={submitting}>
-          Submit
-        </button>
+        {updateFormCreator()}
+        <button type="submit" disabled={submitting}>Submit</button>
       </Form>
     </Formik>
   );
 };
 
-const mapStateToProps = (state) => {
-  const { data, error } = state.userStore;
-  return {
-    error,
-    initialValues: {
-      firstName: data.firstName,
-      lastName: data.lastName,
-      displayName: data.displayName,
-    },
-  };
-};
-
-const mapDispatchToProps = (dispatch) => ({
-  clearUserError: () => dispatch(clearUserError()),
-});
-
-export default connect(mapStateToProps, mapDispatchToProps)(UpdateUserInfoForm);
+export default UpdateUserInfoForm;
