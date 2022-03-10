@@ -1,66 +1,53 @@
 import React from 'react';
-import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
+import { useSelector, useDispatch } from 'react-redux';
+import * as actionCreator from '../../../../actions/actionCreator';
 import { Formik, Form } from 'formik';
 import SelectInput from '../../../SelectInput/SelectInput';
-import { addChatToCatalog } from '../../../../actions/actionCreator';
 import styles from './AddToCatalog.module.sass';
 
-const AddToCatalog = (props) => {
-  const getCatalogsNames = () => {
-    const { catalogList } = props;
-    const namesArray = [];
-    catalogList.forEach((catalog) => {
-      namesArray.push(catalog.catalogName);
-    });
-    return namesArray;
+const initialValues = {
+  catalogId: ''
+};
+
+const AddToCatalog = () => {
+  const { catalogList, addChatId } = useSelector(({ chatStore }) => chatStore);
+  const { addChatToCatalog } = bindActionCreators(actionCreator, useDispatch());
+
+  const getCatalogArray = (value) => {
+    const array = [];
+    catalogList.forEach((catalog) => array.push(catalog[value]));
+    return array;
   };
 
-  const getValueArray = () => {
-    const { catalogList } = props;
-    const valueArray = [];
-    catalogList.forEach((catalog) => {
-      valueArray.push(catalog._id);
-    });
-    return valueArray;
+  const click = (values) => addChatToCatalog({ chatId: addChatId, catalogId: values.catalogId });
+  const classes = {
+    inputContainer: styles.selectInputContainer,
+    inputHeader: styles.selectHeader,
+    selectInput: styles.select,
   };
-
-  const click = (values) => {
-    const { addChatId } = props;
-    props.addChatToCatalog({ chatId: addChatId, catalogId: values.catalogId });
-  };
-
-  const selectArray = getCatalogsNames();
+  
+  const selectArray = getCatalogArray("catalogName");
   return (
-    <>
-      {selectArray.length !== 0
+    <>{
+      selectArray.length !== 0
         ? (
-          <Formik onSubmit={click} initialValues={{ catalogId: '' }}>
+          <Formik onSubmit={click} initialValues={initialValues}>
             <Form className={styles.form}>
               <SelectInput
                 name="catalogId"
                 header="name of catalog"
-                classes={{
-                  inputContainer: styles.selectInputContainer,
-                  inputHeader: styles.selectHeader,
-                  selectInput: styles.select,
-                }}
+                classes={classes}
                 optionsArray={selectArray}
-                valueArray={getValueArray()}
+                valueArray={getCatalogArray("_id")}
               />
               <button type="submit">Add</button>
             </Form>
           </Formik>
         )
-        : <div className={styles.notFound}>You have not created any directories.</div>}
-
-    </>
+        : <div className={styles.notFound}>You have not created any directories.</div>
+    }</>
   );
 };
 
-const mapStateToProps = (state) => state.chatStore;
-
-const mapDispatchToProps = (dispatch) => ({
-  addChatToCatalog: (data) => dispatch(addChatToCatalog(data)),
-});
-
-export default connect(mapStateToProps, mapDispatchToProps)(AddToCatalog);
+export default AddToCatalog;

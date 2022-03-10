@@ -1,30 +1,35 @@
 import React from 'react';
-import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
+import { useDispatch } from 'react-redux';
 import Catalog from '../Catalog/Catalog';
+import * as actionCreator from '../../../../actions/actionCreator';
 import styles from '../CatalogListContainer/CatalogListContainer.module.sass';
-import { changeShowModeCatalog, deleteCatalog } from '../../../../actions/actionCreator';
 
 const CatalogList = (props) => {
+  const { catalogList } = props;
+  const { changeShowModeCatalog, deleteCatalog } = bindActionCreators(actionCreator, useDispatch());
+
   const goToCatalog = (event, catalog) => {
-    props.changeShowModeCatalog(catalog);
+    changeShowModeCatalog(catalog);
     event.stopPropagation();
   };
 
-  const deleteCatalog = (event, catalogId) => {
-    props.deleteCatalog({ catalogId });
+  const deleteCatalogHandle = (event, catalogId) => {
+    deleteCatalog({ catalogId });
     event.stopPropagation();
   };
 
   const getListCatalog = () => {
-    const { catalogList } = props;
     const elementList = [];
     catalogList.forEach((catalog) => {
-      elementList.push(<Catalog
-        catalog={catalog}
-        key={catalog._id}
-        deleteCatalog={deleteCatalog}
-        goToCatalog={goToCatalog}
-      />);
+      elementList.push(
+        <Catalog
+          catalog={catalog}
+          key={catalog._id}
+          deleteCatalog={deleteCatalogHandle}
+          goToCatalog={goToCatalog}
+        />
+      );
     });
     return elementList.length ? elementList : <span className={styles.notFound}>Not found</span>;
   };
@@ -36,9 +41,4 @@ const CatalogList = (props) => {
   );
 };
 
-const mapDispatchToProps = (dispatch) => ({
-  changeShowModeCatalog: (data) => dispatch(changeShowModeCatalog(data)),
-  deleteCatalog: (data) => dispatch(deleteCatalog(data)),
-});
-
-export default connect(null, mapDispatchToProps)(CatalogList);
+export default CatalogList;
