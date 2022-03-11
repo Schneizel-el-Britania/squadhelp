@@ -47,7 +47,7 @@ const OfferForm = (props) => {
     );
   };
 
-  const setOfferFunc = (values, { resetForm }) => {
+  const setOfferHandle = (values, { resetForm }) => {
     clearAddOfferError();
     const data = new FormData();
     data.append('contestId', contestId);
@@ -63,7 +63,7 @@ const OfferForm = (props) => {
     <div className={styles.offerContainer}>
       {addOfferError && <Error data={addOfferError.data} status={addOfferError.status} clearError={clearAddOfferError} />}
       <Formik
-        onSubmit={setOfferFunc}
+        onSubmit={setOfferHandle}
         initialValues={initialValues}
         validationSchema={validationSchema}
       >{(formik) => {

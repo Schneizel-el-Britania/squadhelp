@@ -66,7 +66,7 @@ const OfferBox = (props) => {
     });
   };
 
-  const changeMarkFunc = (value) => {
+  const changeMarkHandle = (value) => {
     clearChangeMarkError();
     changeMark({
       mark: value,
@@ -136,7 +136,7 @@ const OfferBox = (props) => {
               fullSymbol={<img src={`${CONSTANTS.STATIC_IMAGES_PATH}star.png`} alt="star" />}
               placeholderSymbol={<img src={`${CONSTANTS.STATIC_IMAGES_PATH}star.png`} alt="star" />}
               emptySymbol={<img src={`${CONSTANTS.STATIC_IMAGES_PATH}star-outline.png`} alt="star" />}
-              onClick={changeMarkFunc}
+              onClick={changeMarkHandle}
               placeholderRating={mark}
             />
           )}

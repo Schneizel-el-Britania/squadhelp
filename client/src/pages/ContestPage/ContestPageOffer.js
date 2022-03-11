@@ -13,7 +13,7 @@ const ContestPageOffer = () => {
   const { contestData, offers, setOfferStatusError } = useSelector(({ contestByIdStore }) => contestByIdStore);
   const { setOfferStatus, clearSetOfferStatusError } = bindActionCreators(actionCreator, useDispatch());
 
-  const setOfferStatusFunc = (creatorId, offerId, command) => {
+  const setOfferStatusHandle = (creatorId, offerId, command) => {
     clearSetOfferStatusError();
     const { id, orderId, priority } = contestData;
     const obj = {
@@ -39,7 +39,7 @@ const ContestPageOffer = () => {
         data={offers[i]}
         key={offers[i].id}
         needButtons={needButtons}
-        setOfferStatus={setOfferStatusFunc}
+        setOfferStatus={setOfferStatusHandle}
         contestType={contestData.contestType}
         date={new Date()}
       />
