@@ -7,9 +7,9 @@ import CONSTANTS from '../../constants';
 import styles from './UserInfo.module.sass';
 
 const UserInfo = () => {
-  const { data, data: {avatar, role} } = useSelector(({ userStore }) => userStore);
+  const { data, data: { avatar, role } } = useSelector(({ userStore }) => userStore);
   const { isEdit } = useSelector(({ userProfile }) => userProfile);
-  const { updateUserData, changeEditModeOnUserProfile }  = bindActionCreators(actionCreator, useDispatch());
+  const { updateUserData, changeEditModeOnUserProfile } = bindActionCreators(actionCreator, useDispatch());
 
   const updateUserDataHandle = (values) => {
     const formData = new FormData();
@@ -21,7 +21,7 @@ const UserInfo = () => {
   };
 
   const getInfoBlock = (values) => (
-    <div className={styles.infoBlock}>
+    <div key={values.label} className={styles.infoBlock}>
       <span className={styles.label}>{values.label}</span>
       <span className={styles.info}>{values.name}</span>
     </div>
