@@ -1,4 +1,5 @@
 import { combineReducers } from 'redux';
+
 import authReducer from './authReducer';
 import getUserReducer from './userReducer';
 import dataForContestReducer from './dataForContestReducer';
