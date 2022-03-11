@@ -1,38 +1,33 @@
 import React from 'react';
 import classNames from 'classnames';
-import styles from './DialogBox.module.sass';
 import CONSTANTS from '../../../../constants';
+import styles from './DialogBox.module.sass';
 
 const DialogBox = (props) => {
-  const {
-    chatPreview,
-    userId,
-    getTimeStr,
-    changeFavorite,
-    changeBlackList,
-    catalogOperation,
-    goToExpandedDialog,
-    chatMode,
-    interlocutor,
-  } = props;
-  const {
-    favoriteList, participants, blackList, _id, text, createAt,
-  } = chatPreview;
+  const { chatPreview, userId, getTimeStr, changeFavorite, changeBlackList, catalogOperation, goToExpandedDialog, chatMode, interlocutor } = props;
+  const { favoriteList, participants, blackList, _id, text, createAt } = chatPreview;
+
   const isFavorite = favoriteList[participants.indexOf(userId)];
   const isBlocked = blackList[participants.indexOf(userId)];
+
+  const extendChatBox = () => goToExpandedDialog({
+    interlocutor,
+    conversationData: { participants, _id, blackList, favoriteList },
+  });
+
+  const changeFavoriteHandle = (event) => changeFavorite({ participants, favoriteFlag: !isFavorite }, event);
+  const changeBlackListHandle = (event) => changeBlackList({ participants, blackListFlag: !isBlocked }, event);
+  const catalogOperationHandle = (event) => catalogOperation(event, _id);
+
+  const changeFavoriteClasses = classNames({ 'far fa-heart': !isFavorite, 'fas fa-heart': isFavorite });
+  const changeBlackListClasses = classNames({ 'fas fa-user-lock': !isBlocked, 'fas fa-unlock': isBlocked });
+  const catalogOperationClasses = classNames({
+    'far fa-plus-square': chatMode !== CONSTANTS.CATALOG_PREVIEW_CHAT_MODE,
+    'fas fa-minus-circle': chatMode === CONSTANTS.CATALOG_PREVIEW_CHAT_MODE,
+  });
+
   return (
-    <div
-      className={styles.previewChatBox}
-      onClick={() => goToExpandedDialog({
-        interlocutor,
-        conversationData: {
-          participants,
-          _id,
-          blackList,
-          favoriteList,
-        },
-      })}
-    >
+    <div className={styles.previewChatBox} onClick={extendChatBox}>
       <img
         src={interlocutor.avatar === 'anon.png' ? CONSTANTS.ANONYM_IMAGE_PATH : `${CONSTANTS.publicURL}${interlocutor.avatar}`}
         alt="user"
@@ -44,27 +39,9 @@ const DialogBox = (props) => {
         </div>
         <div className={styles.buttonsContainer}>
           <span className={styles.time}>{getTimeStr(createAt)}</span>
-          <i
-            onClick={(event) => changeFavorite({
-              participants,
-              favoriteFlag: !isFavorite,
-            }, event)}
-            className={classNames({ 'far fa-heart': !isFavorite, 'fas fa-heart': isFavorite })}
-          />
-          <i
-            onClick={(event) => changeBlackList({
-              participants,
-              blackListFlag: !isBlocked,
-            }, event)}
-            className={classNames({ 'fas fa-user-lock': !isBlocked, 'fas fa-unlock': isBlocked })}
-          />
-          <i
-            onClick={(event) => catalogOperation(event, _id)}
-            className={classNames({
-              'far fa-plus-square': chatMode !== CONSTANTS.CATALOG_PREVIEW_CHAT_MODE,
-              'fas fa-minus-circle': chatMode === CONSTANTS.CATALOG_PREVIEW_CHAT_MODE,
-            })}
-          />
+          <i onClick={changeFavoriteHandle} className={changeFavoriteClasses} />
+          <i onClick={changeBlackListHandle} className={changeBlackListClasses} />
+          <i onClick={catalogOperationHandle} className={catalogOperationClasses} />
         </div>
       </div>
     </div>
