@@ -2,13 +2,19 @@ const router = require('express').Router();
 const checkToken = require('../middlewares/checkToken');
 const chatController = require('../controllers/chatController');
 
+router.get(
+  '/getCatalogs',
+  checkToken.checkToken,
+  chatController.getCatalogs,
+);
+
 router.post(
   '/createCatalog',
   checkToken.checkToken,
   chatController.createCatalog,
 );
 
-router.post(
+router.patch(
   '/updateNameCatalog',
   checkToken.checkToken,
   chatController.updateNameCatalog,
@@ -30,12 +36,6 @@ router.post(
   '/deleteCatalog',
   checkToken.checkToken,
   chatController.deleteCatalog,
-);
-
-router.post(
-  '/getCatalogs',
-  checkToken.checkToken,
-  chatController.getCatalogs,
 );
 
 module.exports = router;

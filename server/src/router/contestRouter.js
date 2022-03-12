@@ -30,11 +30,17 @@ router.post(
   contestController.getContests,
 );
 
-router.post(
+router.patch(
   '/updateContest',
   checkToken.checkToken,
   upload.updateContestFile,
   contestController.updateContest,
+);
+
+router.get(
+  '/downloadFile/:fileName',
+  checkToken.checkToken,
+  contestController.downloadFile,
 );
 
 module.exports = router;

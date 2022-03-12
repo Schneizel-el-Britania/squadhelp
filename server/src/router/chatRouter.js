@@ -8,16 +8,16 @@ router.post(
   chatController.addMessage,
 );
 
+router.get(
+  '/getPreview',
+  checkToken.checkToken,
+  chatController.getPreview,
+);
+
 router.post(
   '/getChat',
   checkToken.checkToken,
   chatController.getChat,
-);
-
-router.post(
-  '/getPreview',
-  checkToken.checkToken,
-  chatController.getPreview,
 );
 
 router.post(

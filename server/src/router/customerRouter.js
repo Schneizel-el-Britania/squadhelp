@@ -6,12 +6,6 @@ const upload = require('../utils/fileUpload');
 const validators = require('../middlewares/validators');
 const userController = require('../controllers/userController');
 
-router.get(
-  '/downloadFile/:fileName',
-  checkToken.checkToken,
-  contestController.downloadFile,
-);
-
 router.post(
   '/pay',
   checkToken.checkToken,

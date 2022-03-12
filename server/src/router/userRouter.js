@@ -3,12 +3,12 @@ const checkToken = require('../middlewares/checkToken');
 const upload = require('../utils/fileUpload');
 const userController = require('../controllers/userController');
 
-router.post(
+router.get(
   '/getUser',
   checkToken.checkAuth,
 );
 
-router.post(
+router.patch(
   '/updateUser',
   checkToken.checkToken,
   upload.uploadAvatar,
