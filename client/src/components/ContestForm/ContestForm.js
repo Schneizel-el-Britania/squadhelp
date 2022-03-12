@@ -72,6 +72,30 @@ const ContestForm = (props) => {
   }, []);
 
 
+  const inputClasses = {
+    container: styles.componentInputContainer,
+    input: styles.input,
+    warning: styles.warning,
+  };
+  const textAreaClasses = {
+    container: styles.componentInputContainer,
+    inputStyle: styles.textArea,
+    warning: styles.warning,
+  };
+  const selectClasses = {
+    inputContainer: styles.selectInputContainer,
+    inputHeader: styles.selectHeader,
+    selectInput: styles.select,
+    warning: styles.warning,
+  };
+  const fileUploadClasses = {
+    fileUploadContainer: styles.fileUploadContainer,
+    labelClass: styles.label,
+    fileNameClass: styles.fileName,
+    fileInput: styles.fileInput,
+    warning: styles.warning,
+  };
+
   return (
     <>
       {error && <TryAgain getData={getPreference} />}
@@ -91,22 +115,13 @@ const ContestForm = (props) => {
                 name="title"
                 type="text"
                 label="Title"
-                classes={{
-                  container: styles.componentInputContainer,
-                  input: styles.input,
-                  warning: styles.warning,
-                }}
+                classes={inputClasses}
               />
             </div>
             <div className={styles.inputContainer}>
               <SelectInput
                 name="industry"
-                classes={{
-                  inputContainer: styles.selectInputContainer,
-                  inputHeader: styles.selectHeader,
-                  selectInput: styles.select,
-                  warning: styles.warning,
-                }}
+                classes={selectClasses}
                 header="Describe industry associated with your venture"
                 optionsArray={data.industry}
               />
@@ -119,11 +134,7 @@ const ContestForm = (props) => {
                 name="focusOfWork"
                 type="text"
                 label="e.g. We`re an online lifestyle brand that provides stylish and high quality apparel to the expert eco-conscious shopper"
-                classes={{
-                  container: styles.componentInputContainer,
-                  inputStyle: styles.textArea,
-                  warning: styles.warning,
-                }}
+                classes={textAreaClasses}
               />
             </div>
             <div className={styles.inputContainer}>
@@ -134,23 +145,13 @@ const ContestForm = (props) => {
                 name="targetCustomer"
                 type="text"
                 label="customers"
-                classes={{
-                  container: styles.componentInputContainer,
-                  inputStyle: styles.textArea,
-                  warning: styles.warning,
-                }}
+                classes={textAreaClasses}
               />
             </div>
             <OptionalSelects contestType={contestType} data={data} />
             <FieldFileInput
               name="file"
-              classes={{
-                fileUploadContainer: styles.fileUploadContainer,
-                labelClass: styles.label,
-                fileNameClass: styles.fileName,
-                fileInput: styles.fileInput,
-                warning: styles.warning,
-              }}
+              classes={fileUploadClasses}
               type="file"
             />
             {isEditContest ? <button type="submit" className={styles.changeData}>Set Data</button> : null}
