@@ -8,8 +8,8 @@ import CONSTANTS from '../../../../constants';
 import styles from './DialogList.module.sass';
 
 const DialogList = (props) => {
-  const { preview, userId } = props;
-  const { chatMode, removeChat } = useSelector(({ chatStore }) => chatStore);
+  const { preview, userId, removeChat } = props;
+  const { chatMode } = useSelector(({ chatStore }) => chatStore);
   const { goToExpandedDialog, changeChatFavorite, changeChatBlock, changeShowAddChatToCatalogMenu } = bindActionCreators(actionCreator, useDispatch());
 
   const changeFavorite = (data, event) => {
