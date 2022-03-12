@@ -1,8 +1,8 @@
 import React, { useEffect } from 'react';
 import { bindActionCreators } from 'redux';
 import { useSelector, useDispatch } from 'react-redux';
-import * as actionCreator from '../../actions/actionCreator';
-import Spinner from '../Spinner/Spinner';
+import * as actionCreator from '../../../actions/actionCreator';
+import Spinner from '../../Spinner/Spinner';
 
 const PrivateHoc = (Component, hocProps) => {
   const Hoc = (props) => {
