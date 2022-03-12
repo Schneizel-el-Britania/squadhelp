@@ -43,7 +43,7 @@ const ContestForm = (props) => {
     targetCustomer: '',
     file: '',
     ...variableOptions[contestType],
-    ...defaultData(),
+    ...(typeof defaultData === 'function' ? defaultData() : defaultData),
   };
 
   const getPreference = () => {
