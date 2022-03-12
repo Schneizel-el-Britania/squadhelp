@@ -3,7 +3,7 @@ import http from '../interceptor';
 export const dataForContest = (data) => http.post('dataForContest', data);
 export const getCustomersContests = (data) => http.post('getCustomersContests', {
   limit: data.limit,
-  offset: data.offset
+  offset: data.offset,
 }, {
   headers: {
     status: data.contestStatus,
