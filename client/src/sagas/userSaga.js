@@ -10,6 +10,7 @@ export function* privateSaga(action) {
     yield put({ type: ACTION.GET_USER_SUCCESS, data });
     controller.subscribe(data.id);
   } catch (e) {
+    action.replace('/login');
     yield put({ type: ACTION.GET_USER_ERROR, error: e.response });
   }
 }

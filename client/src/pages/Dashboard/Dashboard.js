@@ -8,7 +8,6 @@ import CONSTANTS from '../../constants';
 const Dashboard = (props) => {
   const { history, match } = props;
   const { data } = useSelector(({ userStore }) => userStore);
-  if (!data) { history.replace('/login'); }
 
   return (
     <div>
